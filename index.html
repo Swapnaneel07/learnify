@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnify.ai - Smart Learning Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .pdf-viewer {
+            height: 500px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .sidebar-item:hover .sidebar-icon {
+            transform: translateX(3px);
+        }
+        .sidebar-icon {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Left Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r border-gray-200">
+                <div class="flex items-center justify-center h-16 px-4 bg-indigo-900">
+                    <div class="flex items-center">
+                        <i data-feather="book-open" class="text-white mr-2"></i>
+                        <span class="text-white font-semibold text-lg">Learnify.ai</span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                    <div class="space-y-1">
+                        <div class="px-3 pt-2 pb-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            My Subjects
+                        </div>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-white bg-indigo-900 group">
+                            <i data-feather="cpu" class="sidebar-icon mr-3 text-indigo-300"></i>
+                            Computer Science
+                        </a>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="dna" class="sidebar-icon mr-3 text-red-500"></i>
+                            Biology
+                        </a>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="calculator" class="sidebar-icon mr-3 text-blue-500"></i>
+                            Mathematics
+                        </a>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="globe" class="sidebar-icon mr-3 text-green-500"></i>
+                            Geography
+                        </a>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="book" class="sidebar-icon mr-3 text-purple-500"></i>
+                            Literature
+                        </a>
+                    </div>
+                    <div class="mt-8">
+                        <div class="px-3 pt-2 pb-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Quick Actions
+                        </div>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="plus-circle" class="sidebar-icon mr-3 text-indigo-500"></i>
+                            New Note
+                        </a>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="calendar" class="sidebar-icon mr-3 text-yellow-500"></i>
+                            Schedule
+                        </a>
+                        <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100">
+                            <i data-feather="bookmark" class="sidebar-icon mr-3 text-pink-500"></i>
+                            Bookmarks
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <div class="flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200">
+                <div class="flex items-center">
+                    <button class="md:hidden text-gray-500 focus:outline-none">
+                        <i data-feather="menu"></i>
+                    </button>
+                    <div class="hidden md:block ml-4">
+                        <h1 class="text-lg font-semibold text-gray-900">Dashboard</h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
+                        <i data-feather="bell"></i>
+                    </button>
+                    <div class="relative">
+                        <div class="group">
+                            <button class="flex items-center text-sm rounded-full focus:outline-none hovered-element">
+                                <img class="h-8 w-8 rounded-full" src="http://static.photos/people/200x200/42" alt="User profile">
+                                <span class="ml-2 hidden md:block text-sm font-medium text-gray-700 group-hover:block">Alex Johnson</span>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                                <div class="py-1">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Help Center</a>
+                                    <div class="border-t border-gray-100"></div>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex flex-1 overflow-hidden">
+                <main class="flex-1 overflow-y-auto p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left Column -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Welcome Card -->
+                            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h2 class="text-xl font-semibold text-gray-900">Welcome back, Alex!</h2>
+                                        <p class="mt-1 text-gray-500">You have 3 assignments due this week</p>
+                                    </div>
+                                    <div class="relative w-16 h-16">
+                                        <svg class="w-full h-full" viewBox="0 0 36 36">
+                                            <path
+                                                d="M18 2.0845
+                                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                fill="none"
+                                                stroke="#e6e6e6"
+                                                stroke-width="3"
+                                                stroke-dasharray="100, 100"
+                                            />
+                                            <path
+                                                d="M18 2.0845
+                                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                                fill="none"
+                                                stroke="#3b82f6"
+                                                stroke-width="3"
+                                                stroke-dasharray="75, 100"
+                                                class="progress-ring__circle"
+                                            />
+                                        </svg>
+                                        <div class="absolute inset-0 flex items-center justify-center text-sm font-semibold text-indigo-700">75%</div>
+                                    </div>
+                                </div>
+                                <div class="mt-6 grid grid-cols-3 gap-4">
+                                    <div class="bg-indigo-50 rounded-lg p-3">
+                                        <div class="text-xs font-medium text-indigo-700">Completed</div>
+                                        <div class="mt-1 text-lg font-semibold text-indigo-900">12</div>
+                                    </div>
+                                    <div class="bg-blue-50 rounded-lg p-3">
+                                        <div class="text-xs font-medium text-blue-700">In Progress</div>
+                                        <div class="mt-1 text-lg font-semibold text-blue-900">5</div>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-3">
+                                        <div class="text-xs font-medium text-gray-700">Pending</div>
+                                        <div class="mt-1 text-lg font-semibold text-gray-900">3</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Assignments -->
+                            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="100">
+                                <div class="flex items-center justify-between">
+                                    <h2 class="text-lg font-semibold text-gray-900">Recent Assignments</h2>
+                                    <button class="text-sm text-indigo-600 hover:text-indigo-800">View All</button>
+                                </div>
+                                <div class="mt-4 space-y-4">
+                                    <div class="flex items-start p-3 rounded-lg hover:bg-gray-50">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-indigo-100 text-indigo-800">
+                                                <i data-feather="file-text" class="h-4 w-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <h3 class="text-sm font-medium text-gray-900">Data Structures Project</h3>
+                                                <span class="text-xs text-gray-500">Due in 2 days</span>
+                                            </div>
+                                            <p class="mt-1 text-sm text-gray-500">Implement a binary search tree with traversal methods</p>
+                                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                                <i data-feather="clock" class="mr-1 h-3 w-3"></i>
+                                                <span>Computer Science</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 rounded-lg hover:bg-gray-50">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-800">
+                                                <i data-feather="book" class="h-4 w-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <h3 class="text-sm font-medium text-gray-900">Literature Essay</h3>
+                                                <span class="text-xs text-gray-500">Due in 5 days</span>
+                                            </div>
+                                            <p class="mt-1 text-sm text-gray-500">Analyze the symbolism in The Great Gatsby</p>
+                                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                                <i data-feather="clock" class="mr-1 h-3 w-3"></i>
+                                                <span>Literature</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 rounded-lg hover:bg-gray-50">
+                                        <div class="flex-shrink-0 mt-1">
+                                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-800">
+                                                <i data-feather="bar-chart-2" class="h-4 w-4"></i>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <h3 class="text-sm font-medium text-gray-900">Statistics Problem Set</h3>
+                                                <span class="text-xs text-green-600">Completed</span>
+                                            </div>
+                                            <p class="mt-1 text-sm text-gray-500">Hypothesis testing and confidence intervals</p>
+                                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                                <i data-feather="clock" class="mr-1 h-3 w-3"></i>
+                                                <span>Mathematics</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notes & PDF Viewer -->
+                            <div class="bg-white rounded-xl shadow-sm overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                                <div class="border-b border-gray-200 px-6 py-4">
+                                    <h2 class="text-lg font-semibold text-gray-900">Lecture Notes: Algorithms</h2>
+                                </div>
+                                <div class="pdf-viewer bg-gray-50 flex items-center justify-center">
+                                    <div class="text-center p-6">
+                                        <i data-feather="file-text" class="mx-auto h-12 w-12 text-gray-400"></i>
+                                        <h3 class="mt-2 text-sm font-medium text-gray-900">Algorithms_Week4.pdf</h3>
+                                        <p class="mt-1 text-sm text-gray-500">Click to view or drag and drop to upload</p>
+                                        <button class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+                                            Open PDF Viewer
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="border-t border-gray-200 px-6 py-4 bg-gray-50">
+                                    <div class="flex justify-between">
+                                        <button class="inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+                                            <i data-feather="download" class="mr-2 h-4 w-4"></i>
+                                            Download
+                                        </button>
+                                        <div class="flex space-x-2">
+                                            <button class="inline-flex items-center px-3 py-1 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+                                                <i data-feather="edit" class="mr-2 h-4 w-4"></i>
+                                                Annotate
+                                            </button>
+                                            <button class="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+                                                <i data-feather="plus" class="mr-2 h-4 w-4"></i>
+                                                Add Notes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <!-- AI Tutor -->
+                            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="150">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-100 text-indigo-800">
+                                            <i data-feather="cpu" class="h-5 w-5"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h2 class="text-lg font-semibold text-gray-900">AI Tutor</h2>
+                                        <p class="text-sm text-gray-500">Ask anything about your subjects</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="bg-gray-50 rounded-lg p-3 mb-3">
+                                        <p class="text-sm text-gray-700">What's the time complexity of quicksort in the worst case?</p>
+                                    </div>
+                                    <div class="bg-indigo-50 rounded-lg p-3">
+                                        <p class="text-sm text-gray-700">The worst-case time complexity of quicksort is O(n²). This occurs when the pivot element chosen is either the smallest or largest element in the array, leading to highly unbalanced partitions.</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="flex rounded-md shadow-sm">
+                                        <input type="text" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300" placeholder="Ask your question...">
+                                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+                                            <i data-feather="send" class="h-4 w-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Note to Audio -->
+                            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="200">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="flex items-center justify-center h-10 w-10 rounded-full bg-blue-100 text-blue-800">
+                                            <i data-feather="headphones" class="h-5 w-5"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h2 class="text-lg font-semibold text-gray-900">Note to Audio</h2>
+                                        <p class="text-sm text-gray-500">Convert your notes to audio for listening</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <textarea rows="4" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="Paste your notes here..."></textarea>
+                                </div>
+                                <div class="mt-4 flex justify-between">
+                                    <div class="flex items-center">
+                                        <select class="block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                            <option>English (US)</option>
+                                            <option>Spanish</option>
+                                            <option>French</option>
+                                        </select>
+                                    </div>
+                                    <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
+                                        <i data-feather="play" class="mr-2 h-4 w-4"></i>
+                                        Convert & Play
+                                    </button>
+                                </div>
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-900">Recent Conversions</h3>
+                                        </div>
+                                        <button class="text-sm text-indigo-600 hover:text-indigo-800">Clear All</button>
+                                    </div>
+                                    <div class="mt-2 space-y-2">
+                                        <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                                            <div class="flex items-center">
+                                                <i data-feather="file-text" class="h-4 w-4 text-gray-400"></i>
+                                                <span class="ml-2 text-sm font-medium text-gray-900">Algorithms Notes</span>
+                                            </div>
+                                            <button class="text-indigo-600 hover:text-indigo-900">
+                                                <i data-feather="play" class="h-4 w-4"></i>
+                                            </button>
+                                        </div>
+                                        <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50">
+                                            <div class="flex items-center">
+                                                <i data-feather="file-text" class="h-4 w-4 text-gray-400"></i>
+                                                <span class="ml-2 text-sm font-medium text-gray-900">Biology Chapter 3</span>
+                                            </div>
+                                            <button class="text-indigo-600 hover:text-indigo-900">
+                                                <i data-feather="play" class="h-4 w-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Upcoming Events -->
+                            <div class="bg-white rounded-xl shadow-sm p-6" data-aos="fade-up" data-aos-delay="250">
+                                <div class="flex items-center justify-between">
+                                    <h2 class="text-lg font-semibold text-gray-900">Upcoming Events</h2>
+                                    <button class="text-sm text-indigo-600 hover:text-indigo-800">View Calendar</button>
+                                </div>
+                                <div class="mt-4 space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-indigo-100 rounded-lg p-2">
+                                            <div class="text-xs font-semibold text-indigo-800 uppercase">Mon</div>
+                                            <div class="text-lg font-bold text-indigo-900 leading-none">15</div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <h3 class="text-sm font-medium text-gray-900">Midterm Exam</h3>
+                                            <p class="text-xs text-gray-500">Computer Science • 10:00 AM</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-blue-100 rounded-lg p-2">
+                                            <div class="text-xs font-semibold text-blue-800 uppercase">Wed</div>
+                                            <div class="text-lg font-bold text-blue-900 leading-none">17</div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <h3 class="text-sm font-medium text-gray-900">Group Project Due</h3>
+                                            <p class="text-xs text-gray-500">Mathematics • 11:59 PM</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 bg-green-100 rounded-lg p-2">
+                                            <div class="text-xs font-semibold text-green-800 uppercase">Fri</div>
+                                            <div class="text-lg font-bold text-green-900 leading-none">19</div>
+                                        </div>
+                                        <div class="ml-3">
+                                            <h3 class="text-sm font-medium text-gray-900">Guest Lecture</h3>
+                                            <p class="text-xs text-gray-500">Literature • 2:00 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        feather.replace();
+    </script>
+</body>
+</html>
